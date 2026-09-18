@@ -1,0 +1,21 @@
+name: CI
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  gate:
+    name: gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: title-keyed gate
+        shell: bash
+        run: |
+          echo "PR=${{ github.event.pull_request.number }}"
+          echo "TITLE=${{ github.event.pull_request.title }}"
+          echo "HEAD=${{ github.event.pull_request.head.sha }}"
+          if [[ "${{ github.event.pull_request.title }}" == FAIL* ]]; then
+            echo "failing on purpose"
+            exit 1
+          fi
+          echo "passing"
+          exit 0
